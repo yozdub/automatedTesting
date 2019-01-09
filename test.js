@@ -42,7 +42,7 @@ describe('Now testing marksandspicy.com...', function () {
 			});
 		} 
 		else console.log("Test 1 : no login error found");
-    })
+    });
 
   it('test 2 running...', async function() {
         // Load the page
