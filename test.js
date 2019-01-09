@@ -14,7 +14,7 @@ describe('Now testing marksandspicy.com...', function () {
     afterEach(async function(){
 	await driver.sleep(2000);
 	});
-	
+
     it('test 1 running...', async function() {
         // Load the page
 		await driver.get('https://marksandspicy.com/my-account');
@@ -44,26 +44,22 @@ describe('Now testing marksandspicy.com...', function () {
 		else console.log("Test 1 : no login error found");
     })
 
-/*  it('test 2 running...', async function() {
+  it('test 2 running...', async function() {
         // Load the page
 		await driver.get('https://marksandspicy.com/my-account');
 		
 		// click on email textbox & add text
 		await driver.findElement(By.id('email')).click();
 		await driver.findElement(By.id("email")).sendKeys("test");
-		// triggers "not valid email" & focus it
+		// triggers "not a valid email"
 		await driver.findElement(By.id("passwd")).click();
+		await driver.findElement(By.id("email")).click();
+		// trigger tooltip
 		let toolTip = await driver.findElement(By.id("email"));
-		await driver.findElement(By.id("email")).addEventListener("mouseover", mouseOver);
-		function mouseOver(){
-				};
-		
-		// search tooltip ?
-		//let hover = await driver.findElement(By.xpath("/themes/default-bootstrap/js/modules/blocktopmenu/js/hoverIntent.js")).then(function(text){
-		});
+		await driver.sleep(2000);
+		await toolTip.getAttribute("title").then(text => console.log(`Test 2 : the tooltip is : "${text}"`));
+	});  
 
-    });  
-*/
 	it('test 3 running...', async function() {
         // Load the page
 		await driver.get('https://marksandspicy.com/my-account');
@@ -121,7 +117,6 @@ describe('Now testing marksandspicy.com...', function () {
 				console.log("test 4 : Warning ! City field is empty, autocomplete didn't work");
 			}
 		})
-		
 		 // checking url before and after pressing submit button
 		await driver.wait(until.elementLocated(By.id("BtnCreationSubmit")), 10000);	
 		let beforeUrl = await driver.getCurrentUrl();
@@ -139,6 +134,6 @@ describe('Now testing marksandspicy.com...', function () {
 
     // comment & close the browser 
 	after(async function() { 
-	await console.log("All testing is done, see above for details");
+	await console.log("All tests are done, see above for details.");
 	await driver.quit()});
 });
