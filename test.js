@@ -5,12 +5,16 @@ require('chromedriver');
 const assert = require('assert');
 const {Builder, Key, By, until} = require('selenium-webdriver');
 
-describe('testing marksandspicy.com', function () {
+describe('Now testing marksandspicy.com...', function () {
     let driver;
     before(async function() {
         driver = await new Builder().forBrowser('chrome').build();
 	});
-
+	
+    afterEach(async function(){
+	await driver.sleep(2000);
+	});
+	
     it('test 1 running...', async function() {
         // Load the page
 		await driver.get('https://marksandspicy.com/my-account');
@@ -25,25 +29,22 @@ describe('testing marksandspicy.com', function () {
 		
 		// submit button
 		await driver.findElement(By.id('SubmitLogin')).click();
-		
+		await driver.sleep(2000);
 		await driver.wait(until.elementLocated(By.className("alert-danger")), 10000);
-		let size = driver.findElements(By.className("alert-danger")).then(function(elements){
-			if(size !== ""){
-				elements.forEach(function (element) {
-					element.getText().then(function(text){
-						console.log(text);
+		if (driver.findElements(By.className("alert-danger")).length !== 0) {
+			driver.findElements(By.className("alert-danger")).then(async function(elements){
+				console.log("Test 1 : login issue");
+				await elements.forEach(async function (element) {
+					await element.getText().then(async function(text){
+					await console.log(text);
 					});
 				});	
-				console.log("Test 1 : login issue");
-			}
-			else {
-				console.log("Test 1 : no issue during login");
-			}
-		});
-    });
+			});
+		} 
+		else console.log("Test 1 : no login error found");
+    })
 
-/*
-    it('test 2 running...', async function() {
+/*  it('test 2 running...', async function() {
         // Load the page
 		await driver.get('https://marksandspicy.com/my-account');
 		
@@ -61,9 +62,8 @@ describe('testing marksandspicy.com', function () {
 		//let hover = await driver.findElement(By.xpath("/themes/default-bootstrap/js/modules/blocktopmenu/js/hoverIntent.js")).then(function(text){
 		});
 
-    });
+    });  
 */
-
 	it('test 3 running...', async function() {
         // Load the page
 		await driver.get('https://marksandspicy.com/my-account');
@@ -83,8 +83,8 @@ describe('testing marksandspicy.com', function () {
 		   	console.log("test 3 : Wrong login/password validation appears in the input box");
 		   }
 		})
-    });
-
+		await driver.sleep(2000);
+    })
 
     it('test 4 running...', async function() {
         // Load the page
@@ -125,6 +125,7 @@ describe('testing marksandspicy.com', function () {
 		 // checking url before and after pressing submit button
 		await driver.wait(until.elementLocated(By.id("BtnCreationSubmit")), 10000);	
 		let beforeUrl = await driver.getCurrentUrl();
+		await driver.sleep(2000);
 		await driver.findElement(By.id('BtnCreationSubmit')).click();
 		let newUrl = await driver.getCurrentUrl().then(function(thisUrl) {
 			if(thisUrl === beforeUrl) {
@@ -134,8 +135,10 @@ describe('testing marksandspicy.com', function () {
 				console.log(`test 4 : New url after using submit is : ${ThisUrl}`);
 			}
 		});
-	});
+	})
 
-    // close the browser 
-	//after(async function() { await driver.quit()});
+    // comment & close the browser 
+	after(async function() { 
+	await console.log("All testing is done, see above for details");
+	await driver.quit()});
 });
